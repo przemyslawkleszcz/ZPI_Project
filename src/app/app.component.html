@@ -1,3 +1,36 @@
 <main>
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" (click)="isCollapsed = !isCollapsed" aria-expanded="false">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">ZPI</a>
+			</div>
+			<div class="collapse navbar-collapse" [collapse]="isCollapsed">
+				<ul class="nav navbar-nav">
+					<li>
+						<a *ngIf="!userService.user" [routerLink]="['/login']">
+							Login
+						</a>
+					</li>
+					<li>
+						<a *ngIf="!userService.user" [routerLink]="['/register']">
+							Rejestracja
+						</a>
+					</li>
+					<li>
+						<a *ngIf="userService.user" (click)="logout();">
+							Wyloguj
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
 	<router-outlet></router-outlet>
 </main>

@@ -15,6 +15,8 @@ import { AuthGuard } from './core/auth.guard';
 import { AuthService } from './core/auth.service';
 import { UserService } from './core/user.service';
 import { AppComponent } from './app.component';
+import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { EJAngular2Module } from 'ej-angular2'; 
 
 @NgModule({
   declarations: [
@@ -30,6 +32,8 @@ import { AppComponent } from './app.component';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule, 
     AngularFireAuthModule, 
+    CollapseModule.forRoot(),
+    EJAngular2Module.forRoot() 
   ],
   providers: [AuthService, UserService, UserResolver, AuthGuard],
   bootstrap: [AppComponent]

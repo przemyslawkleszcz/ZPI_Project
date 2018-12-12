@@ -23,10 +23,12 @@
     "angularfire2": "^5.1.0",
     "bootstrap-sass": "^3.3.7",
     "core-js": "^2.5.4",
+    "ej-angular2": "^16.3.30",
     "firebase": "^5.5.9",
     "ng2-bootstrap": "^1.4.0",
     "ngx-bootstrap": "^1.9.3",
     "rxjs": "^6.0.0",
+    "syncfusion-javascript": "^16.3.30",
     "zone.js": "~0.8.26"
   },
   "devDependencies": {
@@ -34,8 +36,10 @@
     "@angular/cli": "~6.1.5",
     "@angular/compiler-cli": "^6.1.0",
     "@angular/language-service": "^6.1.0",
+    "@types/ej.web.all": "^16.3.1",
     "@types/jasmine": "~2.8.6",
     "@types/jasminewd2": "~2.0.3",
+    "@types/jquery": "^3.3.24",
     "@types/node": "~8.9.4",
     "codelyzer": "~4.2.1",
     "jasmine-core": "~2.99.1",

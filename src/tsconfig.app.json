@@ -2,7 +2,12 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "outDir": "../out-tsc/app",
-    "types": []
+    "module": "es2015",
+    "baseUrl": "",
+    "types": [
+      "jquery",
+      "ej.web.all"
+    ]
   },
   "exclude": [
     "test.ts",
