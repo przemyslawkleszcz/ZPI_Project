@@ -9,9 +9,9 @@ export class UserResolver implements Resolve<FirebaseUserModel> {
   constructor(public userService: UserService, private router: Router) { }
 
   resolve(route: ActivatedRouteSnapshot) : Promise<FirebaseUserModel> {
-
     let user = new FirebaseUserModel();
-
+    //TODO: Consifer if we need this resolver 
+    //If not - replace it by opposite logic auth guard
     return new Promise((resolve, reject) => {
       this.userService.getCurrentUser()
       .then(res => {

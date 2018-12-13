@@ -7,6 +7,9 @@ import { environment } from '../environments/environment';
 import { LoginComponent } from './login/login.component';
 import { UserComponent } from './user/user.component';
 import { RegisterComponent } from './register/register.component';
+import { KanbanComponent } from './kanban/kanban.component';
+import { StatisticsComponent } from './statistics/statistics.component';
+import { BurndownComponent } from './burndown/burndown.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { rootRouterConfig } from './app.routes';
@@ -16,14 +19,17 @@ import { AuthService } from './core/auth.service';
 import { UserService } from './core/user.service';
 import { AppComponent } from './app.component';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
-import { EJAngular2Module } from 'ej-angular2'; 
+import { EJAngular2Module } from 'ej-angular2';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     UserComponent,
-    RegisterComponent
+    RegisterComponent,
+    KanbanComponent,
+    StatisticsComponent,
+    BurndownComponent
   ],
   imports: [
     BrowserModule,
