@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { AngularFirestore } from 'angularfire2/firestore';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'page-kanban',
@@ -7,13 +9,28 @@ import { Component } from '@angular/core';
 })
 export class KanbanComponent {
   public kanbanData: any;
-  constructor() {
-    this.kanbanData = [
-      { Id: 1, Status: "Open", Summary: "Analyze the new requirements gathered from the customer.", Assignee: "Nancy" },
-      { Id: 2, Status: "InProgress", Summary: "Improve application performance", Assignee: "Andrew" },
-      { Id: 3, Status: "Open", Summary: "Arrange a web meeting with the customer to get new requirements.", Assignee: "Janet" },
-      { Id: 4, Status: "InProgress", Summary: "Fix the issues reported in the IE browser.", Assignee: "Janet" },
-      { Id: 5, Status: "InProgress", Summary: "Fix the issues reported in the IE browser.", Assignee: "Janet" },
-      { Id: 6, Status: "Sratatata", Summary: "Fix the issues reported by the customer.", Assignee: "Steven" }];
+  public boardName: string;
+  public items: any;
+
+  constructor(private db: AngularFirestore) {
+    this.boardName = "Enter name of a new board";
+
+    this.items = db.collection("Boards")
+      .snapshotChanges()
+      .pipe(map(actions => {
+        return actions.map(a => {
+          const data = a.payload.doc.data();
+          const id = a.payload.doc.id;
+          return { id, data };
+        });
+      }));
+  }
+
+  addBoard(e) {
+    this.db.collection("Boards").add({ Name: this.boardName });
+  }
+
+  resolveName(name) {
+    return { text: name };
   }
 }

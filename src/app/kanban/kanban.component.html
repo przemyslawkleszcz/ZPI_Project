@@ -1,13 +1,33 @@
 <div class="container">
-  asdasdasd
   <div class="row">
-    <ej-kanban id="defaultkanban" [dataSource] ="kanbanData" keyField="Status" fields.content="Summary" fields.primaryKey="Id">
-      <e-kanban-columns>
-          <e-kanban-column key="Open" headerText="Backlog"></e-kanban-column>
-          <e-kanban-column key="InProgress" headerText="In Progress"></e-kanban-column>
-          <e-kanban-column key="Testing" headerText="Testing"></e-kanban-column>
-          <e-kanban-column key="Close" headerText="Done"></e-kanban-column>
-          <e-kanban-column key="Sratatata" headerText="Sratatata"></e-kanban-column> 
-      </e-kanban-columns>
-  </ej-kanban>
-</div>
+    <div class="col-md-12">
+      <b>Create new board</b>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <input type="text" class="e-textbox" [(ngModel)]="boardName" />
+    </div>
+  </div>
+  <br>
+  <div class="row">
+    <div class="col-md-12">
+      <td><input type="button" ej-button id="button" value="Create" (ejclick)="addBoard($event)" /></td>
+    </div>
+  </div>
+  <br><br><br><br>
+  <div class="row">
+    <div class="col-md-12" style="margin-bottom: 10px;">
+      <b>Kanban boards</b>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <a *ngFor="let item of items | async" routerLink="/kanbanBoard/{{item.id}}">
+        <ej-tile id="tile" tileSize="medium" imagePosition="center" imageUrl='../../assets/verification-of-delivery-list-clipboard-symbol.png'
+          [caption]="resolveName(item.data.Name)" [showRoundedCorner]="roundedcorner">
+        </ej-tile>
+      </a>
+    </div>
+  </div>

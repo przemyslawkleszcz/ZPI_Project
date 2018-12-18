@@ -8,8 +8,10 @@ import { LoginComponent } from './login/login.component';
 import { UserComponent } from './user/user.component';
 import { RegisterComponent } from './register/register.component';
 import { KanbanComponent } from './kanban/kanban.component';
+import { KanbanBoardComponent } from './kanbanBoard/kanbanBoard.component';
 import { StatisticsComponent } from './statistics/statistics.component';
 import { BurndownComponent } from './burndown/burndown.component';
+import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { rootRouterConfig } from './app.routes';
@@ -28,11 +30,13 @@ import { EJAngular2Module } from 'ej-angular2';
     UserComponent,
     RegisterComponent,
     KanbanComponent,
+    KanbanBoardComponent,
     StatisticsComponent,
     BurndownComponent
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     ReactiveFormsModule,
     RouterModule.forRoot(rootRouterConfig, { useHash: false }),
     AngularFireModule.initializeApp(environment.firebase),
