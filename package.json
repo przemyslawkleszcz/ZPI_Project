@@ -29,7 +29,8 @@
     "ngx-bootstrap": "^1.9.3",
     "rxjs": "^6.0.0",
     "syncfusion-javascript": "^16.3.30",
-    "zone.js": "~0.8.26"
+    "zone.js": "~0.8.26",
+    "angular2-uuid": "1.1.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.7.0",
