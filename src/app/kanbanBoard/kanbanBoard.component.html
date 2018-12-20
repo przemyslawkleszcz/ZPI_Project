@@ -22,29 +22,38 @@
   <div id="collapseBasic" [collapse]="isCollapsed" class="card card-block card-header" *ngIf="item != null">
     <div class="row" style="margin-bottom: 30px;">
       <div class="col-md-6">
-        <ej-listview #listview [dataSource]="item.Lists" [fieldSettings]="fieldsdata" persistSelection="true" width="300"></ej-listview>
+        <ej-listview #listview [(dataSource)]="item.Lists" [fieldSettings]="fieldsdata" persistSelection="true" width="300"></ej-listview>
       </div>
     </div>
 
     <div class="row">
       <div class="col-md-6">
-        <span><input type="button" ej-button id="button" value="Move up" *ngIf="!this.listRenamingEnabled" (ejclick)="moveUp()"
-            style="margin-right: 4px;" /></span>
-        <span><input type="button" ej-button id="button" value="Move down" *ngIf="!this.listRenamingEnabled" (ejclick)="moveDown()"
-            style="margin-right: 4px;" /></span>
-        <span><input type="button" ej-button id="button" value="Delete" *ngIf="!this.listRenamingEnabled" (ejclick)="deleteBoardList()"
-            style="margin-right: 4px;" /></span>
-        <span><input type="button" ej-button id="button" value="Rename" *ngIf="!this.listRenamingEnabled" (ejclick)="enableOrDisableListRenaming(true)"
-            style="margin-right: 4px;" /></span>
-        <span><input type="button" ej-button id="button" value="Add" *ngIf="!this.listRenamingEnabled" (ejclick)="AddList()" /></span>
+        <span><input type="button" ej-button id="button" value="Move up" *ngIf="!this.listRenamingEnabled && !this.listAddingEnabled"
+            (ejclick)="moveUp()" style="margin-right: 4px;" /></span>
+        <span><input type="button" ej-button id="button" value="Move down" *ngIf="!this.listRenamingEnabled && !this.listAddingEnabled"
+            (ejclick)="moveDown()" style="margin-right: 4px;" /></span>
+        <span><input type="button" ej-button id="button" value="Delete" *ngIf="!this.listRenamingEnabled && !this.listAddingEnabled"
+            (ejclick)="deleteBoardList()" style="margin-right: 4px;" /></span>
+        <span><input type="button" ej-button id="button" value="Rename" *ngIf="!this.listRenamingEnabled && !this.listAddingEnabled"
+            (ejclick)="enableOrDisableListRenaming(true)" style="margin-right: 4px;" /></span>
+        <span><input type="button" ej-button id="button" value="Add" *ngIf="!this.listRenamingEnabled && !this.listAddingEnabled"
+            (ejclick)="enableOrDisableListAdding(true)" /></span>
         <span><input type="text" class="e-textbox" [(ngModel)]="listName" *ngIf="this.listRenamingEnabled" /></span>
+        <span><input type="text" class="e-textbox" [(ngModel)]="listName" *ngIf="this.listAddingEnabled" /></span>
       </div>
     </div>
 
     <div class="row" style="margin-bottom: 30px;">
       <div class="col-md-6">
         <span><input type="button" ej-button id="button" value="Confirm" *ngIf="this.listRenamingEnabled" (ejclick)="changeListName()" /></span>
+        <span><input type="button" ej-button id="button" value="Confirm" *ngIf="this.listAddingEnabled" (ejclick)="createList()" /></span>
       </div>
+    </div>
+  </div>
+
+  <div class="row" style="margin-bottom: 30px;" *ngIf="item != null">
+    <div class="col-md-6">
+      <span><input type="button" ej-button id="button" value="Create card" *ngIf="item.Lists.length > 0" (ejclick)="createCard()" /></span>
     </div>
   </div>
 
@@ -52,8 +61,10 @@
   <div class="row" *ngIf="item != null">
     <div class="col-md-12">
       <ej-kanban #kanban id="kanban" [contextMenuSettings.enable]="true" [editSettings.editItems]="editItem"
-        editSettings.allowEditing="true" editSettings.allowAdding="true" id="defaultkanban" [dataSource]="kanbanData"
-        keyField="Status" fields.content="Summary" fields.primaryKey="Id" fields.priority="RankId" [columns]="item.Lists">
+        editSettings.allowEditing="true" editSettings.allowAdding="true" id="defaultkanban" [dataSource]="item.Cards"
+        (endEdit)="syncCards($event)" (actionComplete)="syncCards($event)" (endDelete)="syncCards($event)"
+        (actionBegin)="syncCards($event)" (beginEdit)="beginEdit($event)" keyField="ListId" fields.content="Title" fields.primaryKey="Id" 
+        fields.priority="RankId" [columns]="item.Lists">
       </ej-kanban>
     </div>
   </div>

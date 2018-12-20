@@ -1,4 +1,4 @@
-import { Component, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnDestroy, ViewChild, IterableDiffers } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { Router } from '@angular/router';
@@ -16,21 +16,25 @@ export class KanbanBoardComponent implements OnDestroy {
   @ViewChild('listview') listView: any;
   @ViewChild('kanban') kanban: any;
 
-  public kanbanData: any;
+  // public kanbanData: any;
   public editItem: any;
 
   private id: any
   public item: any;
   private renamingEnabled: boolean = false;
+  listRenamingEnabled = false;
+  private listAddingEnabled: boolean = false;
+
   private fieldsdata: any;
 
   isCollapsed = true;
   listName = '';
-  listRenamingEnabled = false;
+  iterableDiffer: any;
 
-  constructor(private route: ActivatedRoute, private router: Router, public db: AngularFirestore) {
+  constructor(private route: ActivatedRoute, private router: Router, public db: AngularFirestore, private _iterableDiffers: IterableDiffers) {
     this.id = this.route.snapshot.params['id'];
     var doc = db.collection("Boards").doc(this.id);
+    this.iterableDiffer = this._iterableDiffers.find([]).create(null);
 
     let subscription = doc.get().subscribe((doc) => {
       if (doc.exists)
@@ -40,25 +44,22 @@ export class KanbanBoardComponent implements OnDestroy {
     }, (error) => console.error(error));
 
     this.subscriptions.add(subscription);
-
     this.fieldsdata = { "text": "headerText" };
-    this.kanbanData = [
-      { Id: 1, RankId: 1, Status: "vvvvv", Summary: "Analyze the new requirements gathered from the customer.", Assignee: "Nancy" },
-      { Id: 2, RankId: 1, Status: "vvvvv", Summary: "Improve application performance", Assignee: "Andrew" },
-      { Id: 3, RankId: 1, Status: "KUovDERjgOS1tYVJtJQT", Summary: "Arrange a web meeting with the customer to get new requirements.", Assignee: "Janet" },
-      { Id: 4, RankId: 1, Status: "KUovDERjgOS1tYVJtJQT", Summary: "Fix the issues reported in the IE browser.", Assignee: "Janet" },
-      { Id: 5, RankId: 1, Status: "KUovDERjgOS1tYVJtJQT", Summary: "Fix the issues reported in the XXXXE browser.", Assignee: "Janet" },
-      { Id: 6, RankId: 1, Status: "KUovDERjgOS1tYVJtJQT", Summary: "Fix the issues reported by the customer.", Assignee: "Steven" }
-    ];
 
     this.editItem = [
       { field: 'Id' },
-      { field: 'RankId' },
-      { field: 'Status', editType: ej.Kanban.EditingType.Dropdown },
+      { field: 'ListId', editType: ej.Kanban.EditingType.Dropdown },
       { field: 'Assignee', editType: ej.Kanban.EditingType.Dropdown },
-      { field: 'Estimate', editType: ej.Kanban.EditingType.Numeric, editParams: { decimalPlaces: 2 } },
-      { field: 'Summary', editType: ej.Kanban.EditingType.TextArea, editParams: { height: 100, width: 400 } }
+      { field: 'Title', editType: ej.Kanban.EditingType.String },
+      { field: 'Summary', editType: ej.Kanban.EditingType.TextArea, editParams: { height: 100, width: 400 } },
+      { field: 'Start', editType: ej.Kanban.EditingType.DateTimePicker },
+      { field: 'End', editType: ej.Kanban.EditingType.DateTimePicker },
     ];
+  }
+
+  beginEdit(e) {
+    console.log("asdasd");
+    $('#defaultkanban_ListId').addClass('e-disable');
   }
 
   deleteBoard() {
@@ -82,14 +83,28 @@ export class KanbanBoardComponent implements OnDestroy {
     board.set({ Lists: this.item.Lists }, { merge: true });
   }
 
+  syncCards(e: any) {
+    var board = this.db.collection('Boards').doc(this.id);
+    board.set({ Cards: this.item.Cards }, { merge: true });
+  }
+
   deleteBoardList() {
     let index = this.listView.widget.selectedItemIndex();
     if (index == -1)
       return;
 
-    
-    this.item.Lists.splice(index, 1);
     this.listView.widget.removeItem(index);
+    this.reassignColumns(this.item.Lists);
+    this.updateBoardList();
+  }
+
+  createList() {
+    let list = { key: UUID.UUID(), headerText: this.listName };
+    this.listView.widget.addItem(list, 0);
+    if (this.item.Lists < 1)
+      this.item.Lists.push(list);
+
+    this.listAddingEnabled = false;
     this.reassignColumns(this.item.Lists);
     this.updateBoardList();
   }
@@ -100,14 +115,22 @@ export class KanbanBoardComponent implements OnDestroy {
       return;
 
     this.item.Lists[index].headerText = this.listName;
+    this.listView.widget._load();
     this.listRenamingEnabled = false;
     this.reassignColumns(this.item.Lists);
-    this.reasignListView(this.item.Lists);
     this.updateBoardList();
   }
 
   enableOrDisableRenaming(enabled) {
     this.renamingEnabled = enabled;
+  }
+
+  enableOrDisableListAdding(enabled) {
+    this.listAddingEnabled = enabled;
+  }
+
+  createCard() {
+    this.item.Cards.push({ Id: UUID.UUID(), RankId: 1, ListId: this.item.Lists[0].key, Summary: "New card", Title: "Title", Assignee: "Nancy", Start: new Date(), End: new Date() })
   }
 
   enableOrDisableListRenaming(enabled) {
@@ -158,12 +181,6 @@ export class KanbanBoardComponent implements OnDestroy {
 
     $(this.kanban.widget.element).ejKanban({
       columns: this.item.Lists,
-    });
-  }
-
-  reasignListView(dataSource) {
-    $(this.listView.widget.element).ejListView({
-      dataSource: dataSource
     });
   }
 

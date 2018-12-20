@@ -27,7 +27,7 @@ export class KanbanComponent {
   }
 
   addBoard(e) {
-    this.db.collection("Boards").add({ Name: this.boardName });
+    this.db.collection("Boards").add({ Name: this.boardName, Lists: [], Cards: [] });
   }
 
   resolveName(name) {
