@@ -3,7 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { UUID } from 'angular2-uuid';
 
 @Component({
@@ -16,7 +15,6 @@ export class KanbanBoardComponent implements OnDestroy {
   @ViewChild('listview') listView: any;
   @ViewChild('kanban') kanban: any;
 
-  // public kanbanData: any;
   public editItem: any;
 
   private id: any
@@ -47,19 +45,11 @@ export class KanbanBoardComponent implements OnDestroy {
     this.fieldsdata = { "text": "headerText" };
 
     this.editItem = [
-      { field: 'Id' },
-      { field: 'ListId', editType: ej.Kanban.EditingType.Dropdown },
-      { field: 'Assignee', editType: ej.Kanban.EditingType.Dropdown },
       { field: 'Title', editType: ej.Kanban.EditingType.String },
       { field: 'Summary', editType: ej.Kanban.EditingType.TextArea, editParams: { height: 100, width: 400 } },
-      { field: 'Start', editType: ej.Kanban.EditingType.DateTimePicker },
-      { field: 'End', editType: ej.Kanban.EditingType.DateTimePicker },
+      { field: 'Start', editType: ej.Kanban.EditingType.DatePicker },
+      { field: 'End', editType: ej.Kanban.EditingType.DatePicker },
     ];
-  }
-
-  beginEdit(e) {
-    console.log("asdasd");
-    $('#defaultkanban_ListId').addClass('e-disable');
   }
 
   deleteBoard() {
@@ -130,7 +120,7 @@ export class KanbanBoardComponent implements OnDestroy {
   }
 
   createCard() {
-    this.item.Cards.push({ Id: UUID.UUID(), RankId: 1, ListId: this.item.Lists[0].key, Summary: "New card", Title: "Title", Assignee: "Nancy", Start: new Date(), End: new Date() })
+    this.item.Cards.push({ Id: UUID.UUID(), RankId: 1, ListId: this.item.Lists[0].key, Summary: "", Title: "Enter a card title", Start: new Date(), End: new Date() })
   }
 
   enableOrDisableListRenaming(enabled) {

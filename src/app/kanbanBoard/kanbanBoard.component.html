@@ -61,9 +61,9 @@
   <div class="row" *ngIf="item != null">
     <div class="col-md-12">
       <ej-kanban #kanban id="kanban" [contextMenuSettings.enable]="true" [editSettings.editItems]="editItem"
-        editSettings.allowEditing="true" editSettings.allowAdding="true" id="defaultkanban" [dataSource]="item.Cards"
+        editSettings.allowEditing="true" id="defaultkanban" [dataSource]="item.Cards"
         (endEdit)="syncCards($event)" (actionComplete)="syncCards($event)" (endDelete)="syncCards($event)"
-        (actionBegin)="syncCards($event)" (beginEdit)="beginEdit($event)" keyField="ListId" fields.content="Title" fields.primaryKey="Id" 
+        (actionBegin)="syncCards($event)" keyField="ListId" fields.content="Title" fields.primaryKey="Id" fields.title="Title"
         fields.priority="RankId" [columns]="item.Lists">
       </ej-kanban>
     </div>
