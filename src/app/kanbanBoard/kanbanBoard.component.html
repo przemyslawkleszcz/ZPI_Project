@@ -6,12 +6,25 @@
     <input type="text" class="e-textbox" [(ngModel)]="item.Name" />
   </div>
   <div class="row" style="margin-bottom: 30px;">
-    <div class="col-md-12">
+    <div class="col-md-3">
       <span><input type="button" ej-button id="button" value="Delete" *ngIf="!this.renamingEnabled" (ejclick)="deleteBoard($event)"
           style="margin-right: 4px;" /></span>
       <span><input type="button" ej-button id="button" value="Rename" *ngIf="!this.renamingEnabled" (ejclick)="enableOrDisableRenaming(true)" /></span>
       <span><input type="button" ej-button id="button" value="Confirm" *ngIf="this.renamingEnabled" (ejclick)="changeBoardName()" /></span>
     </div>
+
+
+    <div class="col-md-6">
+      <div *ngIf="this.inviteEnabled">
+        <input type="text" class="e-textbox" [(ngModel)]="invitationEmail" />
+      </div>
+      <span><input type="button" ej-button id="button" value="Invite" *ngIf="!this.inviteEnabled" (ejclick)="enableOrDisableInvite(true)" /></span>
+      <span><input type="button" ej-button id="button" value="Cancel invitation" *ngIf="this.inviteEnabled" (ejclick)="enableOrDisableInvite(false)"
+          style="margin-right: 4px;" /></span>
+      <span><input type="button" ej-button id="button" value="Send invitation" *ngIf="this.inviteEnabled" (ejclick)="sendInvitation(false)" /></span>
+    </div>
+
+
   </div>
 
   <button type="button" class="btn btn-primary" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed"
@@ -61,10 +74,9 @@
   <div class="row" *ngIf="item != null">
     <div class="col-md-12">
       <ej-kanban #kanban id="kanban" [contextMenuSettings.enable]="true" [editSettings.editItems]="editItem"
-        editSettings.allowEditing="true" id="defaultkanban" [dataSource]="item.Cards"
-        (endEdit)="syncCards($event)" (actionComplete)="syncCards($event)" (endDelete)="syncCards($event)"
-        (actionBegin)="syncCards($event)" keyField="ListId" fields.content="Title" fields.primaryKey="Id" fields.title="Title"
-        fields.priority="RankId" [columns]="item.Lists">
+        editSettings.allowEditing="true" id="defaultkanban" [dataSource]="item.Cards" (endEdit)="syncCards($event)"
+        (actionComplete)="syncCards($event)" (endDelete)="syncCards($event)" (actionBegin)="syncCards($event)" keyField="ListId"
+        fields.content="Title" fields.primaryKey="Id" fields.title="Title" fields.priority="RankId" [columns]="item.Lists">
       </ej-kanban>
     </div>
   </div>

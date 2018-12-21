@@ -21,6 +21,9 @@ export class KanbanBoardComponent implements OnDestroy {
   public item: any;
   private renamingEnabled: boolean = false;
   listRenamingEnabled = false;
+  inviteEnabled = false;
+  invitationEmail = '';
+
   private listAddingEnabled: boolean = false;
 
   private fieldsdata: any;
@@ -113,6 +116,21 @@ export class KanbanBoardComponent implements OnDestroy {
 
   enableOrDisableRenaming(enabled) {
     this.renamingEnabled = enabled;
+  }
+
+  enableOrDisableInvite(enabled) {
+    this.inviteEnabled = enabled;
+  }
+
+  sendInvitation() {
+    if (this.invitationEmail == null || this.invitationEmail.trim().length == 0) {
+      return;
+    }
+
+    this.item.Members.push(this.invitationEmail);
+    var board = this.db.collection('Boards').doc(this.id);
+    board.set({ Members: this.item.Members }, { merge: true });
+    this.inviteEnabled = false;
   }
 
   enableOrDisableListAdding(enabled) {

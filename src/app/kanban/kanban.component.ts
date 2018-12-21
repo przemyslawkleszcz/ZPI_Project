@@ -12,18 +12,19 @@ export class KanbanComponent {
   public kanbanData: any;
   public boardName: string;
   public items: any;
-  private userUid: any;
+  public email: string;
 
   constructor(private db: AngularFirestore) {
     this.boardName = "Enter name of a new board";
-    this.userUid = firebase.auth().currentUser.uid;
+    this.email = firebase.auth().currentUser.email;
+
     this.items = db.collection("Boards")
       .snapshotChanges()
       .pipe(map(actions => {
         return actions.filter(a => {
           const data = a.payload.doc.data();
           let members = (<any>data).Members;
-          if (members.indexOf(this.userUid) < 0)
+          if (members.indexOf(this.email) < 0)
             return false;
           else
             return true;
