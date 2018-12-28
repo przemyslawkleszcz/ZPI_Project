@@ -1,6 +1,7 @@
 <div class="container">
   <div class="row" *ngFor="let item of boards" style="margin-bottom: 10px;">
-    <b>Board:</b> {{item.Name}}
+    <b>Board:</b> {{item.Name}}<br>
+    <b>Members:</b> {{item.Members.join()}}
     <hr>
     <div *ngFor="let card of item.Cards">
       &nbsp;<b>Card: </b><span>{{card.Title}}</span>

@@ -29,6 +29,7 @@ export class StatisticsComponent implements OnDestroy {
         });
 
         this.boards = boards;
+        console.log(boards);
       });
 
     this.subscriptions.add(subscription);
