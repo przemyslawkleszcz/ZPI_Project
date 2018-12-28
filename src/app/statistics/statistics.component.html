@@ -1,5 +1,21 @@
 <div class="container">
-  <div class="row">
-    Statystyki
+  <div class="row" *ngFor="let item of boards" style="margin-bottom: 10px;">
+    <b>Board:</b> {{item.Name}}
+    <hr>
+    <div *ngFor="let card of item.Cards">
+      &nbsp;<b>Card: </b><span>{{card.Title}}</span>
+      &nbsp;<b>Start date: </b><span>{{card.Start | date: 'dd/MM/yyyy'}}</span>
+      &nbsp;<b>End date: </b><span>{{card.End | date: 'dd/MM/yyyy'}}</span>
+      &nbsp;<b>Days: </b><span style="color: green;">{{ computeDays(card) }}</span>
+      &nbsp;<b>List: </b><span style="color: green;">{{ getListName(item, card.ListId) }}</span>
+    </div>
+    <br>
+    <b>Days summary:</b>
+    <ej-chart size.height="500px" size.width="1050px" [legend.visible]="false">
+      <e-seriescollection>
+        <e-series  [marker.dataLabel.visible]="true" [dataSource]="getDataSource(item.Cards)" xName="Title" yName="Days">
+        </e-series>
+      </e-seriescollection>
+    </ej-chart>
   </div>
 </div>
