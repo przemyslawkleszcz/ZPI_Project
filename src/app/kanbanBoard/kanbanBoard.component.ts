@@ -4,6 +4,7 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { UUID } from 'angular2-uuid';
+import * as moment from 'moment';
 
 @Component({
   selector: 'page-kanbanBoard',
@@ -34,7 +35,7 @@ export class KanbanBoardComponent implements OnDestroy {
 
   constructor(private route: ActivatedRoute, private router: Router, public db: AngularFirestore, private _iterableDiffers: IterableDiffers) {
     this.id = this.route.snapshot.params['id'];
-    var doc = db.collection("Boards").doc(this.id);
+    let doc = db.collection("Boards").doc(this.id);
     this.iterableDiffer = this._iterableDiffers.find([]).create(null);
 
     let subscription = doc.get().subscribe((doc) => {
@@ -66,19 +67,85 @@ export class KanbanBoardComponent implements OnDestroy {
   }
 
   changeBoardName() {
-    var board = this.db.collection('Boards').doc(this.id);
+    let board = this.db.collection('Boards').doc(this.id);
     board.set({ Name: this.item.Name }, { merge: true });
     this.enableOrDisableRenaming(false);
   }
 
   updateBoardList() {
-    var board = this.db.collection('Boards').doc(this.id);
+    let board = this.db.collection('Boards').doc(this.id);
     board.set({ Lists: this.item.Lists }, { merge: true });
   }
 
   syncCards(e: any) {
-    var board = this.db.collection('Boards').doc(this.id);
-    board.set({ Cards: this.item.Cards }, { merge: true });
+    let board = this.db.collection('Boards').doc(this.id);
+    let todoLists = this.item.Lists.filter((element) => element.headerText == "TODO");
+    if (todoLists.length > 0)
+      this.handleBurnDown(todoLists, board);
+    else
+      board.set({ Cards: this.item.Cards, BurnState: "", BurnValues: null }, { merge: true });
+  }
+
+  handleBurnDown(todoLists, board) {
+    let todoList = todoLists[0];
+    let todoItemKey = todoList.key;
+    let todoCards = this.item.Cards.filter((element) => element.ListId == todoItemKey);
+    let startDates = todoCards.map(c => c.Start);
+    let endDates = todoCards.map(c => c.End);
+
+    let startDatesSorted = startDates.sort((a, b) => {
+      return b - a;
+    });
+
+    let endDatesSorted = endDates.sort((a, b) => {
+      return b - a;
+    });
+
+    let min = startDatesSorted[startDatesSorted.length - 1];
+    let max = endDatesSorted[0];
+    let days = this.computeDays(max, min);
+
+    let date = new Date();
+    let currentMonth = date.getMonth();
+    let firstDay = new Date(date.getFullYear(), currentMonth, 1);
+    let lastDay = new Date(date.getFullYear(), currentMonth + 1, 0);
+
+    let dates;
+    let burnState = moment(date).format('YYYY-MM')
+    let monthTag = moment(date).format('DD')
+
+    if (this.item.BurnValues == null || this.item.BurnState != burnState)
+      dates = this.getDates(firstDay, lastDay, days);
+    else {
+      for (let i = 0; i < this.item.BurnValues.length; i++)
+        if (this.item.BurnValues[i].date == monthTag)
+          this.item.BurnValues[i].value = days;
+
+      dates = this.item.BurnValues;
+    }
+
+    board.set({ Cards: this.item.Cards, BurnState: burnState, BurnValues: dates }, { merge: true });
+  }
+
+  getDates(start, stop, burnValue) {
+    let dateArray = [];
+    let currentDate = moment(start);
+    let stopDate: any = moment(stop);
+    let todaysDate = moment(new Date());
+    while (currentDate <= stopDate) {
+      if (currentDate.format('DD') == todaysDate.format('DD'))
+        dateArray.push({ date: moment(currentDate).format('DD'), value: burnValue })
+      else
+        dateArray.push({ date: moment(currentDate).format('DD'), value: 0 })
+
+      currentDate = moment(currentDate).add(1, 'days');
+    }
+
+    return dateArray;
+  }
+
+  computeDays(end, start) {
+    return Math.floor((end - start) / 86400000) + 1;
   }
 
   deleteBoardList() {
@@ -128,7 +195,7 @@ export class KanbanBoardComponent implements OnDestroy {
     }
 
     this.item.Members.push(this.invitationEmail);
-    var board = this.db.collection('Boards').doc(this.id);
+    let board = this.db.collection('Boards').doc(this.id);
     board.set({ Members: this.item.Members }, { merge: true });
     this.inviteEnabled = false;
   }

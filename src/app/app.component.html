@@ -23,11 +23,6 @@
 						</a>
 					</li>
 					<li>
-						<a *ngIf="userService.user" [routerLink]="['/user']">
-							Konto
-						</a>
-					</li>
-					<li>
 						<a *ngIf="userService.user" [routerLink]="['/kanban']">
 							Kanban
 						</a>
@@ -35,11 +30,6 @@
 					<li>
 						<a *ngIf="userService.user" [routerLink]="['/statistics']">
 							Statystyki
-						</a>
-					</li>
-					<li>
-						<a *ngIf="userService.user" [routerLink]="['/burndown']">
-							Burndown
 						</a>
 					</li>
 					<li>

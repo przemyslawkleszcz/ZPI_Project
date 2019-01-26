@@ -70,7 +70,6 @@
     </div>
   </div>
 
-  <!-- todo: item condition globally -->
   <div class="row" *ngIf="item != null">
     <div class="col-md-12">
       <ej-kanban #kanban id="kanban" [contextMenuSettings.enable]="true" [editSettings.editItems]="editItem"
@@ -80,4 +79,18 @@
       </ej-kanban>
     </div>
   </div>
+
+  <div class="row" *ngIf="item != null && item.BurnValues != null" style="margin-top:10px;">
+  <div class="col-md-12">
+    <b>Burndown</b>
+  </div>
 </div>
+
+<ej-chart *ngIf="item != null && item.BurnValues != null" size.height="500px" size.width="1840px" [legend.visible]="false" commonSeriesOptions.type='line'>
+      <e-seriescollection>
+        <e-series  [marker.dataLabel.visible]="true" [dataSource]="item.BurnValues" xName="date" yName="value">
+        </e-series>
+      </e-seriescollection>
+    </ej-chart>
+</div>
+

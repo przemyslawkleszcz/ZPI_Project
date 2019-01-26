@@ -37,7 +37,7 @@ export class KanbanComponent {
   }
 
   addBoard(e) {
-    this.db.collection("Boards").add({ Name: this.boardName, Lists: [], Cards: [], Members: [this.email] });
+    this.db.collection("Boards").add({ Name: this.boardName, Lists: [], Cards: [], Members: [this.email], BurnState: "", BurnValues: null });
   }
 
   resolveName(name) {
