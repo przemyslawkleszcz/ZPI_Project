@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { map } from 'rxjs/operators';
+import { BoardsService } from "../services/boards.service";
 import * as firebase from 'firebase/app';
 
 @Component({
@@ -8,32 +8,19 @@ import * as firebase from 'firebase/app';
   templateUrl: 'kanban.component.html',
   styleUrls: ['kanban.scss']
 })
-export class KanbanComponent {
+export class KanbanComponent implements OnInit {
   public kanbanData: any;
   public boardName: string;
   public items: any;
   public email: string;
 
-  constructor(private db: AngularFirestore) {
+  constructor(private db: AngularFirestore, private boardsService: BoardsService) {
     this.boardName = "Enter name of a new board";
     this.email = firebase.auth().currentUser.email;
+  }
 
-    this.items = db.collection("Boards")
-      .snapshotChanges()
-      .pipe(map(actions => {
-        return actions.filter(a => {
-          const data = a.payload.doc.data();
-          let members = (<any>data).Members;
-          if (members.indexOf(this.email) < 0)
-            return false;
-          else
-            return true;
-        }).map(a => {
-          const data = a.payload.doc.data();
-          const id = a.payload.doc.id;
-          return { id, data };
-        });
-      }));
+  ngOnInit(): void {
+    this.items = this.boardsService.getBoards();
   }
 
   addBoard(e) {
