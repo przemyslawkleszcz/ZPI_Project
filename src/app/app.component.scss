@@ -1,3 +1,60 @@
 $icon-font-path: "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/fonts/" !default;
 // Include Bootstrap styles
 @import "~bootstrap-sass/assets/stylesheets/_bootstrap";
+
+
+.navbar-default{
+    background-color: #2f5236;
+}
+
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus{
+    color: #fff;
+}
+
+.navbar-default .navbar-nav > li > a {
+    color: #fff;
+}
+
+.e-tile .e-image-parent {
+    background-color: #9a525e;
+}
+
+.e-tile.e-js.e-tile-web:hover .e-image-parent{
+    background-color: #cd5c5c;
+}
+
+body{
+    background-color: #ffffff;
+}
+
+.e-textbox, .e-textarea{
+    border-width: 1px 1px 1px 1px;
+}
+
+.jumbotron{
+    background: url('/assets/kanban.jpg') no-repeat center center;
+    background-size: cover;
+	background-repeat: no-repeat;
+    margin-bottom: 0px;
+    height: 450px;
+    color: white;
+    text-shadow: black 0.1em 0.1em 0.1em;  
+}
+
+.btn-primary {
+    background-color: #01a1ff;
+    border-color: #01a1ff;
+}
+
+ .btn-primary:hover {
+    background-color: #1cd3ff;
+    border-color: #1cd3ff;
+}
+
+.navbar-default .navbar-brand{
+    color: #fff;
+}
+
+.navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus {
+    color: #fff;
+}

@@ -1,8 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import { AngularFireModule } from 'angularfire2';
-import { AngularFirestoreModule } from 'angularfire2/firestore';
-import { AngularFireAuthModule } from 'angularfire2/auth';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 import { environment } from '../environments/environment';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
@@ -20,6 +21,7 @@ import { UserService } from './core/user.service';
 import { AppComponent } from './app.component';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { EJAngular2Module } from 'ej-angular2';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
@@ -29,9 +31,11 @@ import { EJAngular2Module } from 'ej-angular2';
     KanbanComponent,
     KanbanBoardComponent,
     StatisticsComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forRoot(rootRouterConfig, { useHash: false }),

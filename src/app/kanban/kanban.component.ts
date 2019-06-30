@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { map } from 'rxjs/operators';
 import * as firebase from 'firebase/app';
 

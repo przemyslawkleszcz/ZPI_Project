@@ -1,6 +1,6 @@
 import { Component, OnDestroy, ViewChild, IterableDiffers } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { UUID } from 'angular2-uuid';
@@ -13,8 +13,8 @@ import * as moment from 'moment';
 })
 export class KanbanBoardComponent implements OnDestroy {
   private subscriptions: Subscription = new Subscription();
-  @ViewChild('listview') listView: any;
-  @ViewChild('kanban') kanban: any;
+  @ViewChild('listview', {static: false}) listView: any;
+  @ViewChild('kanban', {static: false}) kanban: any;
 
   public editItem: any;
 
@@ -250,11 +250,11 @@ export class KanbanBoardComponent implements OnDestroy {
   }
 
   reassignColumns(columns) {
-    $(this.kanban.widget.element).ejKanban({
+    (<any>$(this.kanban.widget.element)).ejKanban({
       columns: [],
     });
 
-    $(this.kanban.widget.element).ejKanban({
+    (<any>$(this.kanban.widget.element)).ejKanban({
       columns: this.item.Lists,
     });
   }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {CanActivate, ActivatedRouteSnapshot, Router} from "@angular/router";
-import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFireAuth } from '@angular/fire/auth';
 import { UserService } from '../core/user.service';
 
 
@@ -17,7 +17,7 @@ export class AuthGuard implements CanActivate {
     return new Promise((resolve, reject) => {
       this.userService.getCurrentUser()
       .then(user => {
-        this.router.navigate(['/user']); //redirect to main page
+        this.router.navigate(['/home']); //redirect to main page
         return resolve(false);
       }, err => {
         return resolve(true);

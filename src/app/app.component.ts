@@ -2,7 +2,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
 import { UserService } from './core/user.service';
 import { AuthService } from './core/auth.service';
 import { Location } from '@angular/common';
-import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-root',

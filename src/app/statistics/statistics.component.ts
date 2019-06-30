@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
 import * as firebase from 'firebase/app';
 import { Subscription } from 'rxjs';
 
